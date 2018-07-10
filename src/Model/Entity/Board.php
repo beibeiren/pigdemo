@@ -29,3 +29,4 @@ class Board extends Entity
         'content' => true
     ];
 }
+

@@ -172,6 +172,46 @@ class BoardsController extends AppController
         $this->set('count',$data->count());
 
     }
+
+    public function index10($id = null)
+    {
+        $data = null;
+        if($this->request->is('post')){
+            $name = $this->request->getData('name');
+            $data = $this->Boards->get($name);
+        }
+        $this->set('data',$data);
+    }
+
+    public function index11($id = null)
+    {
+        $data = $this->Boards->find('list');
+        // var_dump($data);
+        // exit;
+        $this->set('data',$data->toArray());
+    }
+
+    public function index12($id = null){
+        $data = $this->Boards->find('all');
+        $this->set('data',$data);
+    }
+
+    public function index13($id = null)
+    {
+        $data = $this->Boards->find();
+        if($this->request->is('post')){
+            $input = $this->request->getData('input');
+            $data = $this->Boards
+                ->find()
+                ->where(['id <='=>$input])
+                ->order(['id'=>'DESC']);
+        }
+        // var_dump($data);
+        // exit;
+        $this->set('data',$data);
+        $this->set('entity',$this->Boards->newEntity());
+    }
+
     public function editRecord()
     {
        if ($this->request->is('put')){
@@ -214,6 +254,7 @@ class BoardsController extends AppController
         }
         $this->redirect(['action' => 'index']);
     }
+
 }
 
 

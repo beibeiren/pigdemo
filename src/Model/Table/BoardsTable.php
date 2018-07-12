@@ -1,10 +1,12 @@
 <?php
 namespace App\Model\Table;
 
+use Cake\Datasource\EntityInterface;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Cake\Event\Event;
 
 /**
  * Boards Model
@@ -64,4 +66,24 @@ class BoardsTable extends Table
 
         return $validator;
     }
+
+    public static  function  defaultConnectionName(){
+        return 'default';
+    }
+    public function beforeFind(Event $event,Query $query ){
+        $query->order(['name'=>'DESC']);
+    }
+    public function beforeSave(Event $event, EntityInterface
+    $entity, $options){
+        $n = $this->find('all',['conditions'=>['name'=>$entity->name]])
+            ->count();
+        if ($n == 0){
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
+
+
+

@@ -1,9 +1,9 @@
 <h1>Databaseサンプル</h1>
 <?=$this->Form->create($entity,['url'=>['action'=>'addRecord']]) ?>
 <fieldset>
-<?=$this->Form->text("name") ?>
-<?=$this->Form->text("title") ?>
-<?=$this->Form->textarea("content") ?>
+<?=$this->Form->input("姓名", ['name' => 'name', 'type' => 'text']) ?>
+<?=$this->Form->input("标题", ['name' => 'title', 'type' => 'text']) ?>
+<?=$this->Form->input("content") ?>
 </fieldset>
 <?=$this->Form->button("送信") ?>
 <?=$this->Form->end() ?>

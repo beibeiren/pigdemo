@@ -52,7 +52,8 @@ class BoardsTable extends Table
 
         $validator
             ->scalar('name')
-            ->maxLength('name', 255)
+            ->minLength('name', 3,'3文字以下で入力ください。')
+            ->maxLength('name', 20,'20文字以下で入力ください。')
             ->allowEmpty('name');
 
         $validator

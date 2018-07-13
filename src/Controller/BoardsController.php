@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\Datasource\ConnectionManager;
 
 /**
  * Boards Controller
@@ -204,10 +205,29 @@ class BoardsController extends AppController
             $data = $this->Boards
                 ->find()
                 ->where(['id <='=>$input])
+                ->select(['name','title'])
                 ->order(['id'=>'DESC']);
         }
         // var_dump($data);
         // exit;
+        $this->set('data',$data);
+        $this->set('entity',$this->Boards->newEntity());
+    }
+
+    public function index14($id = null){
+        if (!$this->request->is('post')) {
+            $connection = ConnectionManager::get('default');
+            $data = $connection
+                ->execute('SELECT * FROM boards' )
+                ->fetchAll('assoc');
+        }else {
+            $input = $this->request->getData('input');
+            $connection = ConnectionManager::get('default');
+            $data = $connection
+                ->execute('SELECT * FROM boards where id = :id',
+                    ['id'=>$input])
+                ->fetchAll('assoc');
+        }
         $this->set('data',$data);
         $this->set('entity',$this->Boards->newEntity());
     }
@@ -237,9 +257,12 @@ class BoardsController extends AppController
     {
         if ($this->request->is('post')) {
             $board = $this->Boards->newEntity($this->request->getData());
-            $this->Boards->save($board);
+            if($this->Boards->save($board)){
+                $this->redirect(['action' => 'index']);
+            }
+            $this->set('entity',$board);
         }
-        return $this->redirect(['action' => 'index']);
+
     }
 
     public function delRecord(){
